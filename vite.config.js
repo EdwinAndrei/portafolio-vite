@@ -1,21 +1,35 @@
 import { defineConfig } from "vite";
-import { globSync } from "glob";
-import path from "path";
+import path, { resolve } from "node:path";
+import * as glob from "glob";
+
+function obtenerEntradas() {
+    return Object.fromEntries(
+        glob.sync(
+            './*.html',
+            {
+                ignore: [
+                    './dist/**',
+                    './node_modules/**'
+                ]
+            }
+        ).map((file) => {
+            return [
+                file.replace('.html', ''),
+                resolve(__dirname, file)
+            ];
+        })
+    );
+}
 
 export default defineConfig({
-  appType: "mpa",
+    appType: 'mpa',
+    base: process.env.DEPLOY_BASE_URL || '/portafolio-vite/',
 
-  base: "/portafolio-vite/",
-
-  build: {
-    rollupOptions: {
-      input: Object.fromEntries(
-        globSync("./*.html").map((file) => [
-          path.basename(file, ".html"),
-          path.resolve(__dirname, file),
-        ])
-      ),
+    build: {
+        minify: true,
+        rollupOptions: {
+            input: obtenerEntradas()
+        },
+        outDir: 'dist'
     },
-    outDir: "dist",
-  },
 });
