@@ -3,13 +3,16 @@ import { globSync } from "glob";
 import path from "path";
 
 export default defineConfig({
-  root: ".",
+  appType: "mpa",
+
+  base: "/portafolio-vite/",
+
   build: {
     rollupOptions: {
       input: Object.fromEntries(
-        globSync("*.html").map((file) => [
+        globSync("./*.html").map((file) => [
           path.basename(file, ".html"),
-          path.resolve(file),
+          path.resolve(__dirname, file),
         ])
       ),
     },
