@@ -20,15 +20,12 @@ function obtenerEntradas() {
 
 export default defineConfig({
   appType: "mpa",
-  base: process.env.DEPLOY_BASE_URL ,
+  base: process.env.DEPLOY_BASE_URL,
   build: {
     minify: true,
     rollupOptions: {
       input: obtenerEntradas(),
     },
   },
-  plugins: [
-    HtmlCssPurgePlugin(),
-    ViteMinifyPlugin(),
-  ],
+  plugins: [HtmlCssPurgePlugin(), ViteMinifyPlugin()],
 });
