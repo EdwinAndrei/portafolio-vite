@@ -3,28 +3,36 @@ import path, { resolve } from "node:path";
 import * as glob from "glob";
 
 function obtenerEntradas() {
-    return Object.fromEntries(
-        glob.sync('./*.html', {
-            ignore: ['./dist/**', './node_modules/**']
-        }).map((file) => [
-            file.slice(0, file.length - path.extname(file).length),
-            resolve(__dirname, file)
-        ])
-    );
+  return Object.fromEntries(
+    glob.sync("./*.html", {
+      ignore: ["./dist/**", "./node_modules/**"]
+    }).map((file) => [
+      file.slice(0, file.length - path.extname(file).length),
+      resolve(__dirname, file)
+    ])
+  );
 }
 
 export default defineConfig({
-    appType: 'mpa',
+  appType: "mpa",
 
-    base: process.env.DEPLOY_BASE_URL,
+  // Base URL para GitHub Pages
+  base: process.env.DEPLOY_BASE_URL || "/portafolio-vite/",
 
-    build: {
-        outDir: "dist",
-        assetsDir: "assets",
-        minify: true,
+  build: {
+    outDir: "dist",
+    assetsDir: "assets",
+    minify: true,
+    rollupOptions: {
+      input: obtenerEntradas()
+    }
+  },
 
-        rollupOptions: {
-            input: obtenerEntradas(),
-        }
-    },
+  css: {
+    preprocessorOptions: {
+      less: {
+        // Aquí puedes agregar variables globales si quieres
+      }
+    }
+  }
 });
