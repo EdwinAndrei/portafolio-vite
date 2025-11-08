@@ -16,7 +16,7 @@ function obtenerEntradas() {
 export default defineConfig({
     appType: 'mpa',
 
-    base: "/portafolio-vite/",
+    base: process.env.DEPLOY_BASE_URL,
 
     build: {
         outDir: "dist",
