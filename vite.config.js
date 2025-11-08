@@ -1,37 +1,26 @@
-import { defineConfig } from "vite";
-import path, { resolve } from "node:path";
-import * as glob from "glob";
-
-function obtenerEntradas() {
-  return Object.fromEntries(
-    glob.sync("./*.html", {
-      ignore: ["./dist/**", "./node_modules/**"]
-    }).map((file) => [
-      file.slice(0, file.length - path.extname(file).length),
-      resolve(__dirname, file)
-    ])
-  );
-}
+import { defineConfig } from 'vite'
+import path from 'path'
 
 export default defineConfig({
-  appType: "mpa",
-
-  base: process.env.DEPLOY_BASE_URL,
-
+ base: process.env.DEPLOY_BASE_URL,
   build: {
-    outDir: "dist",
-    assetsDir: "assets",
-    minify: true,
-    rollupOptions: {
-      input: obtenerEntradas()
-    }
-  },
 
+    rollupOptions: {
+      input: {
+        index: path.resolve(__dirname, 'index.html'),
+        biografia: path.resolve(__dirname, 'biografia.html'),
+        contactos: path.resolve(__dirname, 'contactos.html')
+      }
+    },
+    outDir: 'dist',
+    assetsDir: 'assets',
+    cssCodeSplit: true,
+    minify: 'esbuild'
+  },
+  
   css: {
     preprocessorOptions: {
-      less: {
-       
-      }
+      less: {}
     }
   }
-});
+})
