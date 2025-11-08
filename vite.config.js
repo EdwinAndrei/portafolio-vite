@@ -16,8 +16,7 @@ function obtenerEntradas() {
 export default defineConfig({
   appType: "mpa",
 
-  // Base URL para GitHub Pages
-  base: process.env.DEPLOY_BASE_URL || "/portafolio-vite/",
+  base: process.env.DEPLOY_BASE_URL,
 
   build: {
     outDir: "dist",
@@ -31,7 +30,7 @@ export default defineConfig({
   css: {
     preprocessorOptions: {
       less: {
-        // Aquí puedes agregar variables globales si quieres
+       
       }
     }
   }
